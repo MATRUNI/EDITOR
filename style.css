@@ -1,0 +1,9 @@
+*{
+    margin: 0%;
+}
+
+body{
+    height: 100vh;
+    max-width: auto;
+    background-color: antiquewhite;
+}
