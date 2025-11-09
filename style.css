@@ -4,6 +4,46 @@
 
 body{
     height: 100vh;
-    max-width: auto;
     background-color: antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    #area{
+        cursor: text;
+        height: 90vh;
+        width: 90vw;
+        background-color: #1e1e1e;
+        /* background-color: #111111; */
+        padding: 1rem;
+        border-radius: 20px;
+        color: white;
+
+        .cursor{
+            display: inline-block;
+            height: 1.2rem;
+            width: 2px;
+            /* background-color: black; */
+            vertical-align: middle;
+            animation: blink 1s infinite step-end;
+        }
+        .line{
+            color: red;
+        }
+    }
+}
+.pointer{
+    border: 2px solid red;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    /* background-color: transparent; */
+    pointer-events: none;
+}
+@keyframes blink{
+    50%{
+        opacity: 0;
+    }
 }
