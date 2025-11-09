@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <script> const socket = new WebSocket("ws://" + location.host); socket.onmessage = (e) => { if (e.data === "reload") { location.reload(); } }; </script>
 </head>
 <body>
-    <div id="area">
-
-    </div>
+    <div id="area"></div>
+    <script src="logic.js"></script>
 </body>
 </html>
