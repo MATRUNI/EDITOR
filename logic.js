@@ -82,11 +82,12 @@ document.addEventListener('keydown', (pressed)=>{
         left+=right.slice(0,1);
         right=right.slice(1);
     }
-    else if(pressed.key==="ArrowUp"&&displayText.length>0&&cursorIndex>=0)
+    else if(pressed.key==="ArrowUp"&&displayText.length>0&&cursorIndex>0)
     {
         let divsInArea=area?.getElementsByTagName("div")[cursorIndex-1];
-        
-        if(cursorIndex===index)
+        let divs2=area.getElementsByTagName("div")[cursorIndex]
+        console.log(!divs2)
+        if(cursorIndex===index&& !divs2)
        { 
             displayText.push(left);
             let line=document.createElement("div")
@@ -100,7 +101,6 @@ document.addEventListener('keydown', (pressed)=>{
         }
         else
         {
-            let divs2=area.getElementsByTagName("div")[cursorIndex]
             cursorIndex--;
             divs2.textContent=left+right;
             left=divsInArea.textContent;
@@ -110,11 +110,11 @@ document.addEventListener('keydown', (pressed)=>{
         }
 
     }
-    else if(pressed.key==="ArrowDown"&&cursorIndex!=index)
+    else if(pressed.key==="ArrowDown")
     {
         let divsInArea=area.getElementsByTagName("div")[cursorIndex];
         let divs2=area.getElementsByTagName("div")[cursorIndex+1]
-        if(cursorIndex!=index)
+        if(cursorIndex<index)
         {
             divsInArea.textContent=left+right; 
             left=divs2.textContent;
@@ -123,8 +123,12 @@ document.addEventListener('keydown', (pressed)=>{
             divs2.append(leftNode,cursor,rightNode);
             cursorIndex++;
         }
+        else
+            return;
     }
     else if(pressed.key==="Enter"){
+        let divsInArea=area.getElementsByTagName("div")[cursorIndex];
+        let divs2=area.getElementsByTagName("div")[cursorIndex+1]
         if(index===cursorIndex)
         {
             displayText.push(left);
@@ -137,8 +141,6 @@ document.addEventListener('keydown', (pressed)=>{
             area.append(wrapper.appendChild(leftNode),cursor,wrapper.appendChild(rightNode));
         }
         else{
-            let divs2=area.getElementsByTagName("div")[cursorIndex+1]
-            let divsInArea=area.getElementsByTagName("div")[cursorIndex];
             divsInArea.textContent=left+right;
 
             left=divs2.textContent;
