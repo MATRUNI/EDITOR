@@ -50,6 +50,15 @@ let leftNode=document.createTextNode(left)
 let wrapper=document.createElement("span");
 area.append(wrapper.appendChild(leftNode),cursor,wrapper.appendChild(rightNode));
 // displayText.push(left);
+function addLine(str)
+{
+    let line=document.createElement("div")
+    line.textContent=str;
+    area.appendChild(line);
+    let br=document.createElement("br");
+    area.appendChild(br);
+    area.append(wrapper.appendChild(leftNode),cursor,wrapper.appendChild(rightNode));
+}
 document.addEventListener('keydown', (pressed)=>{
     if(pressed.key.length===1)
         left+=pressed.key;
@@ -58,11 +67,14 @@ document.addEventListener('keydown', (pressed)=>{
         if(left.length===0&&area.children.length>0)
         {
             console.log(area.children.length);
-            area.children[area.children.length-2].remove();
-            left=area.children[area.children.length-2].textContent;
-            area.children[area.children.length-2].remove();
-            index--;
-            cursorIndex--;
+            if(area.children.length>2)
+            {
+                area.children[area.children.length-2].remove();
+                left=area.children[area.children.length-2].textContent;
+                area.children[area.children.length-2].remove();
+                index--;
+                cursorIndex--;
+            }
         }
         else
         left=left.slice(0,-1);
@@ -86,7 +98,7 @@ document.addEventListener('keydown', (pressed)=>{
     {
         let divsInArea=area?.getElementsByTagName("div")[cursorIndex-1];
         let divs2=area.getElementsByTagName("div")[cursorIndex]
-        console.log(!divs2)
+        // console.log(!divs2)
         if(cursorIndex===index&& !divs2)
        { 
             displayText.push(left);
@@ -129,24 +141,32 @@ document.addEventListener('keydown', (pressed)=>{
     else if(pressed.key==="Enter"){
         let divsInArea=area.getElementsByTagName("div")[cursorIndex];
         let divs2=area.getElementsByTagName("div")[cursorIndex+1]
-        if(index===cursorIndex)
+        if(index===cursorIndex&&!divsInArea)
         {
+            // console.log("Enter's if");
             displayText.push(left);
-            let line=document.createElement("div")
-            line.textContent=left;
+            addLine(left+right);
             left="";
-            area.appendChild(line);
+        }
+        else if(!divs2)
+        {
+            // console.log("ENter's else IF",divsInArea.textContent);
+            divsInArea.textContent=left+right;
             let br=document.createElement("br");
             area.appendChild(br);
+
+            left="";
             area.append(wrapper.appendChild(leftNode),cursor,wrapper.appendChild(rightNode));
         }
         else{
-            divsInArea.textContent=left+right;
-
-            left=divs2.textContent;
-            right="";
-            divs2.append(leftNode,cursor,rightNode);
-
+            // console.log("Enter's ELSE");
+            divsInArea.textContent=left;
+            left="";
+            let newDiv=document.createElement("div");
+            area.insertBefore(newDiv, divs2)
+            newDiv.append(leftNode,cursor,rightNode);
+            let br=document.createElement("br");
+            area.insertBefore(br, divs2);
         }
         cursorIndex++;
         index++;
@@ -157,8 +177,8 @@ document.addEventListener('keydown', (pressed)=>{
     leftNode.textContent=left;
     rightNode.textContent=right;
     // console.log("lineIndex:",index);
-    console.log("cursorIndex:",cursorIndex);
-    console.log("Index:",index);
+    // console.log("cursorIndex:",cursorIndex);
+    // console.log("Index:",index);
 });
 
 let pointer=document.createElement("div");
