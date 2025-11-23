@@ -188,3 +188,44 @@ document.addEventListener('mousemove', (e)=>{
     pointer.style.left=e.pageX+"px";
     pointer.style.top=e.pageY+"px";
 })
+
+//remove node varaible and try to implement it with textContent Arrow up  block
+area.addEventListener('click', e=>{
+    const range=document.caretPositionFromPoint(e.clientX, e.clientY);
+    if(!range)
+        return;
+    let divsInArea=e.target;
+    let divs2=area.getElementsByTagName("div")[cursorIndex];
+    // let divsInArea=area.getElementsByTagName("div")[closest];
+    if(cursorIndex===index&& !divs2)
+    { 
+        let line=document.createElement("div")
+        line.textContent=left+right;
+        area.appendChild(line);
+        let index=range.offset;
+        left=divsInArea.textContent.slice(0,index);
+        right=divsInArea.textContent.slice(index);
+
+        divsInArea.textContent=""
+        divsInArea.append(leftNode,cursor,rightNode);
+        cursorIndex=indexOfDivTags(divsInArea);
+    } 
+    else
+    {
+        cursorIndex=indexOfDivTags(divsInArea);
+        divs2.textContent=left+right;
+        let index=range.offset;
+        left=divsInArea.textContent.slice(0,index);
+        right=divsInArea.textContent.slice(index)
+        divsInArea.textContent=""
+        divsInArea.append(leftNode,cursor,rightNode);
+    }
+
+    leftNode.textContent=left;
+    rightNode.textContent=right;
+});
+function indexOfDivTags(child)
+{
+    let c=Array.from(area.children).filter(element=> element.tagName==="DIV");
+    return c.indexOf(child);
+}
