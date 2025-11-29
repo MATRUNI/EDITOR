@@ -66,14 +66,24 @@ document.addEventListener('keydown', (pressed)=>{
     {
         if(left.length===0&&area.children.length>0)
         {
-            console.log(area.children.length);
-            if(area.children.length>2)
+            let div=document.getElementsByTagName('div')[cursorIndex];
+            let noOFChildren=area.children.length;
+            let childToBeDelted=cursorIndex*2-1;
+            if(noOFChildren>2)
             {
-                area.children[area.children.length-2].remove();
-                left=area.children[area.children.length-2].textContent;
-                area.children[area.children.length-2].remove();
-                index--;
+                console.log(div);
+                console.log("1st:",left);
+                left=div.textContent;
+                console.log("2nd:",left);
+                div.textContent="";
+                console.log("3rd:",left);
+                div.append(leftNode,cursor,rightNode);
+                console.log("4th:",left);
+                area.children[childToBeDelted].remove();
+                area.children[childToBeDelted].remove();
+                console.log("5th:",left);
                 cursorIndex--;
+                index--;
             }
         }
         else
@@ -85,9 +95,11 @@ document.addEventListener('keydown', (pressed)=>{
         left+="      ";
     }
     else if(pressed.key==="ArrowLeft"&&left.length!=0)
-        {
+    {
+        // console.log("Arrow left:", left,":",right);
         right=left.slice(-1)+right;
         left=left.slice(0,-1);
+        // document.getElementsByTagName('div')[cursorIndex].append(left,cursor,right);
     }
     else if(pressed.key==="ArrowRight"&&right.length!=0)
     {
@@ -189,7 +201,7 @@ document.addEventListener('mousemove', (e)=>{
     pointer.style.top=e.pageY+"px";
 })
 
-//remove node varaible and try to implement it with textContent Arrow up  block
+
 area.addEventListener('click', e=>{
     const range=document.caretPositionFromPoint(e.clientX, e.clientY);
     if(!range)
