@@ -4,44 +4,44 @@
 
 body{
     height: 100vh;
-    background-color: antiquewhite;
+    background: linear-gradient(145deg,rgb(110, 250, 215),rgb(158, 245, 155));
     display: flex;
     align-items: center;
     justify-content: center;
 
-    #area{
-        cursor: text;
-        height: 90vh;
-        width: 90vw;
-        background-color: #1e1e1e;
-        /* background-color: #111111; */
-        padding: 1rem;
-        border-radius: 20px;
-        color: white;
-        white-space: pre;
+}
+#area{
+    cursor: text;
+    height: 90vh;
+    width: 90vw;
+    background: linear-gradient(486deg, rgb(75, 96, 209),rgb(0, 145, 137));
+    padding: 1rem;
+    border-radius: 20px;
+    color: white;
+    white-space: pre;
+    overflow: auto;
 
-        .cursor{
-            display: inline-block;
-            height: 1.2rem;
-            width: 2px;
-            /* background-color: black; */
-            vertical-align: middle;
-            animation: blink 1s infinite step-end;
-        }
-        .line{
-            color: red;
-        }
-    }
+}
+.cursor{
+    display: inline-block;
+    height: 1.2rem;
+    width: 2px;
+    vertical-align: middle;
+    animation: blink 1s infinite step-end;
+}
+.line{
+    color: red;
 }
 .pointer{
-    border: 2px solid red;
+    -webkit-backdrop-filter: contrast(200%) brightness(120%) grayscale(70%);
+    backdrop-filter: contrast(200%) brightness(120%) grayscale(70%);
     height: 2rem;
     width: 2rem;
     border-radius: 50%;
     position: absolute;
     transform: translate(-50%,-50%);
-    /* background-color: transparent; */
     pointer-events: none;
+    padding: 2px;
 }
 @keyframes blink{
     50%{
