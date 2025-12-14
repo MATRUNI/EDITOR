@@ -67,21 +67,16 @@ document.addEventListener('keydown', (pressed)=>{
         if(left.length===0&&area.children.length>0)
         {
             let div=document.getElementsByTagName('div')[cursorIndex];
+            addLine("");
             let noOFChildren=area.children.length;
             let childToBeDelted=cursorIndex*2-1;
             if(noOFChildren>2)
             {
-                console.log(div);
-                console.log("1st:",left);
                 left=div.textContent;
-                console.log("2nd:",left);
-                div.textContent="";
-                console.log("3rd:",left);
+                div.textContent="";;
                 div.append(leftNode,cursor,rightNode);
-                console.log("4th:",left);
                 area.children[childToBeDelted].remove();
                 area.children[childToBeDelted].remove();
-                console.log("5th:",left);
                 cursorIndex--;
                 index--;
             }
@@ -157,7 +152,7 @@ document.addEventListener('keydown', (pressed)=>{
         {
             // console.log("Enter's if");
             displayText.push(left);
-            addLine(left+right);
+            addLine(left);
             left="";
         }
         else if(!divs2)
@@ -188,9 +183,6 @@ document.addEventListener('keydown', (pressed)=>{
 
     leftNode.textContent=left;
     rightNode.textContent=right;
-    // console.log("lineIndex:",index);
-    // console.log("cursorIndex:",cursorIndex);
-    // console.log("Index:",index);
 });
 
 let pointer=document.createElement("div");
