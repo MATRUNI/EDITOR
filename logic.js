@@ -7,10 +7,105 @@ let cursorIndex=0;
 let area=document.getElementById("area");
 let rightNode=document.createTextNode(right)
 let leftNode=document.createTextNode(left)
-class KeyBoardEvents
+class MouseEvents
 {
     constructor()
     {
+        this.colour = [
+          "#FF5555", // bright red
+          "#50FA7B", // light green
+          "#8BE9FD", // cyan blue
+          "#FFB86C", // orange
+          "#BD93F9", // light purple
+          "#F1FA8C", // pale yellow
+          "#FF79C6", // pink
+          "#00FFFF", // cyan
+          "#FF55FF", // magenta
+          "#A6FF00", // lime
+          "#D27D2D", // warm brown
+          "#7B68EE", // indigo
+          "#1ABC9C", // turquoise
+          "#9B59B6", // violet
+          "#FFD700", // gold
+          "#C0C0C0"  // silver
+        ];
+        this.cursor=document.createElement("span");
+        this.colourIndex=0;
+        this.wrapper=document.createElement("span");
+        area.append(this.wrapper.appendChild(leftNode),this.cursor,this.wrapper.appendChild(rightNode));
+        this.init();
+    }
+    init()
+    {
+        this.mousePointerDecoration();
+        this.textCaretDecoration();
+        this.listener();
+    }
+    mousePointerDecoration()
+    {
+        let pointer=document.createElement("div");
+        pointer.classList.add("pointer");
+        document.body.appendChild(pointer);
+        document.addEventListener('mousemove', (e)=>{
+            pointer.style.left=e.pageX+"px";
+            pointer.style.top=e.pageY+"px";
+        })
+    }
+    listener()
+    {
+        area.addEventListener('click', e=>{
+        const range=document.caretPositionFromPoint(e.clientX, e.clientY);
+        if(!range)
+            return;
+        let divsInArea=e.target;
+        let divs2=area.getElementsByTagName("div")[cursorIndex];
+        // let divsInArea=area.getElementsByTagName("div")[closest];
+        if(cursorIndex===index&& !divs2)
+        { 
+            let line=document.createElement("div")
+            line.textContent=left+right;
+            area.appendChild(line);
+            this.caret(range, divsInArea);
+
+            cursorIndex=indexOfDivTags(divsInArea);
+        } 
+        else
+        {
+            cursorIndex=indexOfDivTags(divsInArea);
+            divs2.textContent=left+right;
+            this.caret(range, divsInArea);
+        }
+        
+        leftNode.textContent=left;
+        rightNode.textContent=right;
+        });
+    }
+    caret(range,element)
+    {
+        let index=range.offset;
+        left=element.textContent.slice(0,index);
+        right=element.textContent.slice(index)
+        element.textContent=""
+        element.append(leftNode,this.cursor,rightNode);
+    }
+    textCaretDecoration()
+    {
+        this.cursor.classList.add("cursor");
+        setInterval(()=> this.changeColour(),1000);
+    }
+    changeColour()
+    {
+        this.cursor.style.backgroundColor=this.colour[this.colourIndex];
+        this.colourIndex=(this.colourIndex+1)%this.colour.length;
+    }
+}
+let mouse=new MouseEvents();
+class KeyBoardEvents
+{
+    constructor(mouseInstance)
+    {
+        this.cursor=mouseInstance.cursor;
+        this.wrapper=mouseInstance.wrapper;
         this.eventListeners();
     }
     eventListeners()
@@ -80,7 +175,7 @@ class KeyBoardEvents
             left=divsInArea.textContent;
             right="";
             divsInArea.textContent=""
-            divsInArea.append(leftNode,cursor,rightNode);
+            divsInArea.append(leftNode,this.cursor,rightNode);
             cursorIndex--;
         }
         else
@@ -90,7 +185,7 @@ class KeyBoardEvents
             left=divsInArea.textContent;
             right=""
             divsInArea.textContent=""
-            divsInArea.append(leftNode,cursor,rightNode);
+            divsInArea.append(leftNode,this.cursor,rightNode);
         }
     }
     downKey()
@@ -103,7 +198,7 @@ class KeyBoardEvents
             left=divs2.textContent;
             right="";
             divs2.textContent="";
-            divs2.append(leftNode,cursor,rightNode);
+            divs2.append(leftNode,this.cursor,rightNode);
             cursorIndex++;
         }
         else
@@ -128,7 +223,7 @@ class KeyBoardEvents
                 area.appendChild(br);
 
                 left="";
-                area.append(wrapper.appendChild(leftNode),cursor,wrapper.appendChild(rightNode));
+                area.append(this.wrapper.appendChild(leftNode),this.cursor,this.wrapper.appendChild(rightNode));
             }
             else{
                 // console.log("Enter's ELSE");
@@ -136,7 +231,7 @@ class KeyBoardEvents
                 left="";
                 let newDiv=document.createElement("div");
                 area.insertBefore(newDiv, divs2)
-                newDiv.append(leftNode,cursor,rightNode);
+                newDiv.append(leftNode,this.cursor,rightNode);
                 let br=document.createElement("br");
                 area.insertBefore(br, divs2);
             }
@@ -145,7 +240,7 @@ class KeyBoardEvents
     }
     backSpace()
     {
-        if(left.length===0&&area.children.length>0)
+        if(left.length===0&&area.children.length>1&&cursorIndex>0)
         {
             let div=document.getElementsByTagName('div')[cursorIndex];
             this.addLine("");
@@ -154,8 +249,8 @@ class KeyBoardEvents
             if(noOFChildren>2)
             {
                 left=div.textContent;
-                div.textContent="";;
-                div.append(leftNode,cursor,rightNode);
+                div.textContent="";
+                div.append(leftNode,this.cursor,rightNode);
                 area.children[childToBeDelted].remove();
                 area.children[childToBeDelted].remove();
                 cursorIndex--;
@@ -172,107 +267,20 @@ class KeyBoardEvents
         area.appendChild(line);
         let br=document.createElement("br");
         area.appendChild(br);
-        area.append(wrapper.appendChild(leftNode),cursor,wrapper.appendChild(rightNode));
+        area.append(this.wrapper.appendChild(leftNode),this.cursor,this.wrapper.appendChild(rightNode));
     }
 }
-new KeyBoardEvents();
+new KeyBoardEvents(mouse);
 
-class MouseEvents
-{
-    constructor()
-    {
-        this.colour = [
-          "#FF5555", // bright red
-          "#50FA7B", // light green
-          "#8BE9FD", // cyan blue
-          "#FFB86C", // orange
-          "#BD93F9", // light purple
-          "#F1FA8C", // pale yellow
-          "#FF79C6", // pink
-          "#00FFFF", // cyan
-          "#FF55FF", // magenta
-          "#A6FF00", // lime
-          "#D27D2D", // warm brown
-          "#7B68EE", // indigo
-          "#1ABC9C", // turquoise
-          "#9B59B6", // violet
-          "#FFD700", // gold
-          "#C0C0C0"  // silver
-        ];
-        this.cursor=document.createElement("span");
-        this.colourIndex=0;
-        this.textCaretDecoration();
-        let wrapper=document.createElement("span");
-        area.append(wrapper.appendChild(leftNode),cursor,wrapper.appendChild(rightNode));
-    }
-    textCaretDecoration()
-    {
-        //From here to
-        this.cursor.classList.add("cursor");
-        // let colour = [
-        //     "red", "green", "blue", "orange", 
-        //     "purple", "yellow", "pink", "cyan", 
-        //     "magenta", "lime", "brown", "indigo", 
-        //     "turquoise", "violet", "gold", "silver"
-        // ];
-        setInterval(this.changeColour,1000);
-        // here- made the cursor blink on div
-    }
-    changeColour()
-    {
-        this.cursor.style.backgroundColor=this.colour[this.colourIndex];
-        this.colourIndex=(this.colourIndex+1)%this.colour.length;
-    }
-}
-new MouseEvents();
 
 
 // displayText.push(left);
 
 
-let pointer=document.createElement("div");
-pointer.classList.add("pointer");
-document.body.appendChild(pointer);
-document.addEventListener('mousemove', (e)=>{
-    pointer.style.left=e.pageX+"px";
-    pointer.style.top=e.pageY+"px";
-})
 
 
-area.addEventListener('click', e=>{
-    const range=document.caretPositionFromPoint(e.clientX, e.clientY);
-    if(!range)
-        return;
-    let divsInArea=e.target;
-    let divs2=area.getElementsByTagName("div")[cursorIndex];
-    // let divsInArea=area.getElementsByTagName("div")[closest];
-    if(cursorIndex===index&& !divs2)
-    { 
-        let line=document.createElement("div")
-        line.textContent=left+right;
-        area.appendChild(line);
-        let index=range.offset;
-        left=divsInArea.textContent.slice(0,index);
-        right=divsInArea.textContent.slice(index);
 
-        divsInArea.textContent=""
-        divsInArea.append(leftNode,cursor,rightNode);
-        cursorIndex=indexOfDivTags(divsInArea);
-    } 
-    else
-    {
-        cursorIndex=indexOfDivTags(divsInArea);
-        divs2.textContent=left+right;
-        let index=range.offset;
-        left=divsInArea.textContent.slice(0,index);
-        right=divsInArea.textContent.slice(index)
-        divsInArea.textContent=""
-        divsInArea.append(leftNode,cursor,rightNode);
-    }
 
-    leftNode.textContent=left;
-    rightNode.textContent=right;
-});
 function indexOfDivTags(child)
 {
     let c=Array.from(area.children).filter(element=> element.tagName==="DIV");
