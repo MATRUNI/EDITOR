@@ -4,20 +4,23 @@
 
 body{
     height: 100vh;
-    background: linear-gradient(145deg,rgb(110, 250, 215),rgb(158, 245, 155));
     display: flex;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
 }
 #area{
     cursor: text;
     height: 90vh;
     width: 90vw;
-    background: linear-gradient(486deg, rgb(75, 96, 209),rgb(0, 145, 137));
     padding: 1rem;
     border-radius: 20px;
+    background: linear-gradient(135deg, #2e3440 0%, #3b4252 100%);
     color: white;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     white-space: pre;
     overflow: auto;
 
