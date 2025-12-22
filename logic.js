@@ -60,7 +60,12 @@ class MouseEvents
         let divsInArea=e.target;
         let divs2=area.getElementsByTagName("div")[cursorIndex];
         // let divsInArea=area.getElementsByTagName("div")[closest];
-        if(cursorIndex===index&& !divs2)
+        if(e.target===area)
+        {
+            // console.log("target: area");
+            return;
+        }
+        else if(cursorIndex===index&& !divs2)
         { 
             let line=document.createElement("div")
             line.textContent=left+right;
